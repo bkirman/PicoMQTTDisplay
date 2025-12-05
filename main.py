@@ -5,6 +5,7 @@ from scenes.loading import LoadingScene
 from scenes.teatime import TeatimeScene
 from scenes.rainbow import RainbowScene
 from scenes.snow import SnowScene
+from scenes.meteor import MeteorScene
 from scene import Scene
 import wifi
 import mqtt_settings
@@ -29,7 +30,7 @@ led_strip.clear()
 led_strip.start()
 
 # Set animation scene
-scene = LoadingScene()
+scene = Scene()
 scene.sceneInit(NUM_LEDS)
 
 def changeMode(data):
@@ -61,6 +62,11 @@ def changeMode(data):
         scene = SnowScene()
         scene.sceneInit(NUM_LEDS)
         return
+    if(int(data)==5):
+        print("Meteor Scene")
+        scene = MeteorScene()
+        scene.sceneInit(NUM_LEDS)
+        return
 
 
 # Listen for MQTT messages
@@ -77,15 +83,10 @@ remote_change.set_action(changeMode)
 
 device.discover_all()
 
+remote_change.publish(0)
+
 while True:
     scene.draw(led_strip)
-    #new_pixels = scene.draw(pixels)
-    #for i in range(len(new_pixels)): #only change updated pixels - you might instead do some smoothing or animated shenanigans here
-    #    print(str(new_pixels[i]) + " : "+ str(pixels[i]))
-    #    if new_pixels[i] != pixels[i]:
-    #        
-    #        led_strip.set_rgb(i, new_pixels[i][0],new_pixels[i][1],new_pixels[i][2])
-    #pixels = new_pixels
-    
+  
     device.loop()
     time.sleep(1.0 / FPS)
