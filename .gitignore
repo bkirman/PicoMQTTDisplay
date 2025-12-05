@@ -1,0 +1,4 @@
+/.micropico
+/.vscode
+/mqtt_settings.py
+/network_settings.py
