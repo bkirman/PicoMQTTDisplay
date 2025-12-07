@@ -6,6 +6,7 @@ from scenes.teatime import TeatimeScene
 from scenes.rainbow import RainbowScene
 from scenes.snow import SnowScene
 from scenes.meteor import MeteorScene
+from scenes.christmas import ChristmasScene
 from scene import Scene
 import wifi
 import mqtt_settings
@@ -67,6 +68,11 @@ def changeMode(data):
         scene = MeteorScene()
         scene.sceneInit(NUM_LEDS)
         return
+    if(int(data)==6):
+        print("Christmas Scene")
+        scene = ChristmasScene()
+        scene.sceneInit(NUM_LEDS)
+        return
 
 
 # Listen for MQTT messages
@@ -83,7 +89,7 @@ remote_change.set_action(changeMode)
 
 device.discover_all()
 
-remote_change.publish(0)
+remote_change.publish(6)
 
 while True:
     scene.draw(led_strip)
